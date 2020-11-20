@@ -7,13 +7,17 @@ const userRouter = require("./routes/User");
 app.use(cookieParser());
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb://localhost:27017/mernauth",
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log("successfully connected to database");
-  }
-);
+const connectionString =
+  "mongodb+srv://flexuser:flexhelper@cluster0.pfldj.mongodb.net/clientDB?retryWrites=true&w=majority";
+
+// connect to mongoDB
+mongoose
+  .connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to Database"))
+  .catch((err) => console.log(err));
 
 app.use("./user", userRouter);
 

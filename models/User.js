@@ -30,7 +30,7 @@ UserSchema.pre("save", function (next) {
   });
 });
 
-// checking is user entered password matches password hash stored in db
+// checking if user entered password matches password hash stored in db
 UserSchema.methods.comparePassword = function (password, cb) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) return console(err);
