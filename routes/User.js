@@ -63,6 +63,25 @@ userRouter.post(
   }
 );
 
+// logout endpoint route
+userRouter.get(
+  "/logout",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.clearCookie("access_token");
+    res.json({ user: { username: "", role: "" }, succes: true });
+  }
+);
+
+// userRouter.post("/", function () {
+//   console.log("this is a POST");
+// });
+// userRouter.get("/", function () {
+//   console.log("this is a GET");
+//   res.writeHead(200);
+//   res.end();
+// });
+
 // userRouter.get("/", (req, res) => {
 //   User.findOne().then((users) => res.json(users));
 // });
