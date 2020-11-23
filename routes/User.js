@@ -6,6 +6,17 @@ const JWT = require("jsonwebtoken");
 const User = require("../models/User");
 const Todo = require("../models/Todo");
 
+//sign token
+const signToken = (userID) => {
+  return JWT.sign(
+    {
+      iss: "flexhelp",
+      sub: userID,
+    },
+    "flexhelp",
+    { expiresIn: "1h" }
+  );
+};
 
 // registration route
 userRouter.post("/register", (req, res) => {
@@ -39,16 +50,18 @@ userRouter.post("/register", (req, res) => {
 });
 
 // login endpoint route
-userRouter.post("/login", passport.authenticate('local', {session: false}), (req, res) => {
-  if(req.isAuthenticated()) {
-    const {_id, username,role} = req.user;
-    const token = signtoken(_id);
-    res.cookie('access_token',token,{httpOnly: true, sameSite:true})
-    res.status(200).json({isAuthenticated: true, user: {username, role}})
+userRouter.post(
+  "/login",
+  passport.authenticate("local", { session: false }),
+  (req, res) => {
+    if (req.isAuthenticated()) {
+      const { _id, username, role } = req.user;
+      const token = signToken(_id);
+      res.cookie("access_token", token, { httpOnly: true, sameSite: true });
+      res.status(200).json({ isAuthenticated: true, user: { username, role } });
+    }
   }
-
-});
-
+);
 
 // userRouter.get("/", (req, res) => {
 //   User.findOne().then((users) => res.json(users));
