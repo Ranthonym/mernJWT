@@ -21,33 +21,33 @@ const signToken = (userID) => {
 // registration route
 userRouter.post("/register", (req, res) => {
   const { username, password, role } = req.body;
-  User.findOne({ username }, (err, user) => {
+  // User.findOne({ username }, (err, user) => {
+  //   if (err)
+  //     res
+  //       .status(500)
+  //       .json({ message: { msgBody: "Error has occured", msgError: true } });
+  //   if (user)
+  //     res.status(400).json({
+  //       message: { msgBody: "Username is already taken", msgError: true },
+  //     });
+  // else {
+  const newUser = new User({ username, password, role });
+  newUser.save((err) => {
     if (err)
-      res
-        .status(500)
-        .json({ message: { msgBody: "Error has occured", msgError: true } });
-    if (user)
-      res.status(400).json({
-        message: { msgBody: "Username is already taken", msgError: true },
+      res.status(500).json({
+        message: { msgBody: "Error has occured", msgError: true },
       });
-    else {
-      const newUser = new User({ username, password, role });
-      newUser.save((err) => {
-        if (err)
-          res.status(500).json({
-            message: { msgBody: "Error has occured", msgError: true },
-          });
-        else
-          res.status(201).json({
-            message: {
-              msgBody: "Account successfully created",
-              msgError: false,
-            },
-          });
+    else
+      res.status(201).json({
+        message: {
+          msgBody: "Account successfully created",
+          msgError: false,
+        },
       });
-    }
   });
+  // }
 });
+// });
 
 // login endpoint route
 userRouter.post(
@@ -82,11 +82,9 @@ userRouter.get(
         .status(200)
         .json({ message: { msgBody: "You are an admin", msgError: false } });
     } else
-      res
-        .status(403)
-        .json({
-          message: { msgBody: "You're not an admin,go away", msgError: true },
-        });
+      res.status(403).json({
+        message: { msgBody: "You're not an admin,go away", msgError: true },
+      });
   }
 );
 
